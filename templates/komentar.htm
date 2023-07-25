@@ -1,0 +1,57 @@
+{{ define "komentar.htm" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JeWePe Mading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-gray-50 dark:bg-gray-900 w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="/jewepe" class="flex items-start">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">JEWEPE</span>
+            </a>
+            <div class="flex md:order-2">
+                <p type="button" class="text-white bg-white-700 hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800">------</p>
+            </div>
+        </div>
+    </nav>
+    <!-- Komentar -->
+    <div class="flex justify-center w-full px-4 py-16 text-center bg-white">
+        <div class="w-full max-w-2xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <form class="space-y-6" action="/jewepe/users/artikel/{{ .artikelId }}/komentar" method="post">
+                <h5 class="text-xl font-medium text-gray-900 dark:text-white">Membuat Komentar</h5>
+                <h3 class="text-md font-medium text-gray-700 dark:text-white">"{{ .judulArtikel }}"</h3>
+                <div class="mb-6">
+                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-start">Nama</label>
+                    <input type="text" id="nama" name="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-start">Email</label>
+                    <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="isi_komentar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-start">Isi Komentar</label>
+                    <textarea id="isi_komentar" name="isi_komentar" rows="3" cols="50" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                </div>
+                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                <div class="text-sm font-medium text-gray-500 dark:text-gray-300 text-start">
+                    <a href="/jewepe/artikel/{{ .artikelId }}" class="text-blue-700 hover:underline dark:text-blue-500">Back to Detail Artikel Page</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-100 rounded-lg shadow dark:bg-gray-900">
+        <div class="w-full mt-10 max-w-screen-xl mx-auto p-4 md:py-8">
+            <a href="./login.htm" class="text-center text-sm text-gray-500 p-2"><p>login admin click here...</p></a>
+            <span class="block text-center text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">JeWePe Mading</a>. All Rights Reserved.</span>
+        </div>
+    </footer>
+</body>
+</html>
+{{ end }}

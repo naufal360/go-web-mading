@@ -1,0 +1,131 @@
+{{ define "r_artikel.htm" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JeWePe Mading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-gray-50 dark:bg-gray-900 w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="/jewepe" class="flex items-center">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">JEWEPE</span>
+            </a>
+            <div class="flex items-center justify-between">
+                <ul class="flex items-center font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+                    <li>
+                        <a href="/jewepe" class="inline-block py-2 pl-3 pr-4 rounded sm:hover:text-blue-700 md:p-0">Home</a>
+                    </li>
+                    {{ if .isLogin }}
+                    <li>
+                        <a href="/jewepe/dashboard" class="inline-block py-2 pl-3 pr-4 rounded sm:hover:text-blue-700 md:p-0">Dashboard</a>
+                    </li>
+                    {{ else }}
+                    <li>
+                        <a href="/jewepe#artikel" class="inline-block py-2 pl-3 pr-4 rounded sm:hover:text-blue-700 md:p-0">Artikel</a>
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
+            {{ if .isLogin }}
+            <div class="flex md:order-2">
+                <a href="/jewepe/logout" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Logout</a>
+            </div>
+            {{ else }}
+            <div class="flex md:order-2">
+                <p type="button" class="text-white bg-white-700 hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800">------</p>
+            </div>
+            {{ end }}
+        </div>
+    </nav>
+    <!-- Detail -->
+    <div class="flex justify-center w-full p-4 text-center bg-white">
+        <div class="flex-auto min-w-xl max-w-3xl pt-3">
+            <div class="max-w-3xl pb-3">
+                <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">{{ .artikel.Judul }}</h5>
+            </div>
+            <div class="max-w-3xl my-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <p class="mb-3 whitespace-pre-line font-normal p-2 text-justify text-gray-700 dark:text-gray-400">{{ .artikel.IsiArtikel }}</p>
+            </div>
+        </div>
+    </div>
+    <!-- Komentar -->
+    <div class="flex justify-center w-full p-2 text-center bg-white">
+        <div class="flex-auto min-w-xl max-w-3xl pt-3">
+            <div class="max-w-3xl my-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                {{ if .isLogin }}
+                <h5 class="mb-2 text-xl font-bold text-gray-900 dark:text-white place-self-center p-1">Komentar</h5>
+                {{ else }}
+                <div class="flex flex-row justify-between">
+                    <h5 class="mb-2 text-xl font-bold text-gray-900 dark:text-white place-self-center p-1">Komentar</h5>
+                    <a href="/jewepe/users/artikel/{{ .artikel.Id }}/komentar">
+                        <button type="button" class="items-center text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800 my-4">Buat Komentar</button>
+                    </a>
+                </div>
+                {{ end }}
+                <div class="my-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    {{ if eq .komentarCount 0 }}
+                    <div>
+                        <p class="mb-3 px-12 font-bold text-xl text-center text-gray-700 dark:text-gray-400">Belum ada komentar</p>
+                    </div>
+                    {{ else }}
+                    {{ $out := . }}
+                    {{ range .artikel.Komentar }}
+                    <div class="flex flex-col min-w-max">
+                        {{ if $out.isLogin }}
+                        <div class="flex justify-between">
+                            <p class="mb-3 font-semibold px-2 text-start text-gray-700 dark:text-gray-400">{{ .Nama }}</p>
+                            <button onclick="deleteRequest('/jewepe/dashboard/komentar/delete/{{ .Id }}')" class="inline-flex items-center">
+                                <img src="/static/bin.png" alt="delete" height="25px" width="25px" class="object-cover">
+                            </button>
+                        </div>
+                        {{ else }}
+                        <div>
+                            <p class="mb-3 font-semibold px-2 text-start text-gray-700 dark:text-gray-400">{{ .Nama }}</p>
+                        </div>
+                        {{ end }}
+                        <div class="max-w-2xl">
+                            <p class="mb-3 font-normal text-sm px-2 text-start text-gray-700 dark:text-gray-400">{{ .Email }}</p>
+                            <p class="mb-3 whitespace-pre-line break-words font-normal p-2 text-justify text-gray-700 dark:text-gray-400">{{ .IsiKomentar }}</p>
+                        </div>
+                    </div>
+                    {{ end }}
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-100 rounded-lg shadow dark:bg-gray-900">
+        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+            <hr class="my-6 border-gray-50 sm:mx-auto dark:border-gray-700 lg:my-4" />
+            {{ if not .isLogin }}
+            <a href="/jewepe/login" class="text-center text-sm text-gray-500 p-2"><p>login admin click here...</p></a>
+            {{ end }}
+            <span class="block text-center text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">JeWePe Mading</a>. All Rights Reserved.</span>
+        </div>
+    </footer>
+    {{ if .isLogin }}
+    <!-- logic jquery -->
+    <script>
+        function deleteRequest(urlLink) {
+            // confirm delete
+            confirm('are you sure delete komentar?');
+            // call api delete
+            $.ajax({
+                url: urlLink,
+                method: 'DELETE',
+            });
+            // refresh page
+            location.reload(true);
+        }
+    </script>
+    {{ end }}
+</body>
+</html>
+{{ end }}
